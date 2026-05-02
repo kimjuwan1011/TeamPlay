@@ -1,0 +1,223 @@
+/* ===== Page Header ===== */
+.page-header {
+  background: var(--text-main);
+  color: var(--btn-text);
+  padding: 80px 0;
+  margin-bottom: 0;
+  text-align: center;
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+}
+
+.page-header p {
+  font-size: 1.1rem;
+  opacity: 0.8;
+  font-weight: 400;
+}
+
+/* ===== Filter Area ===== */
+.filter-area {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 32px 0;
+  position: sticky;
+  top: 72px;
+  z-index: 50;
+}
+
+.filter-row {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 16px;
+}
+
+.filter-row:last-child { margin-bottom: 0; }
+
+.filter-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-sub);
+  white-space: nowrap;
+  min-width: 40px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ===== Search Bar ===== */
+.search-bar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 32px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--border);
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 16px 20px;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: 1rem;
+  outline: none;
+  transition: all var(--transition);
+  background: var(--bg-card);
+  color: var(--text-main);
+  box-shadow: var(--shadow-sm);
+}
+
+.search-bar input:focus { 
+  border-color: var(--text-main); 
+  box-shadow: 0 0 0 4px rgba(0,0,0,0.05);
+}
+
+.search-bar input::placeholder { color: var(--text-light); }
+
+.search-bar button {
+  padding: 16px 32px;
+  background: var(--text-main);
+  color: var(--btn-text);
+  border-radius: 100px;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all var(--transition);
+  white-space: nowrap;
+  border: none;
+  cursor: pointer;
+}
+
+.search-bar button:hover { background: #333; }
+
+.search-bar #clearSearchBtn {
+  background: transparent;
+  color: var(--text-main);
+  border: 1px solid var(--border);
+}
+.search-bar #clearSearchBtn:hover {
+  background: var(--secondary);
+}
+
+/* ===== Result Info ===== */
+.result-info {
+  padding: 40px 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.result-count {
+  font-size: 1rem;
+  color: var(--text-sub);
+}
+
+.result-count strong {
+  color: var(--text-main);
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+.search-mode-badge {
+  font-size: 0.8rem;
+  padding: 6px 16px;
+  background: #f0f0f0;
+  color: var(--text-main);
+  border-radius: 100px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* ===== Restaurant Grid ===== */
+.list-section { padding: 0 0 100px; background: var(--bg-light); }
+
+#restaurant-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+/* ===== Loading Spinner ===== */
+.loading {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 80px 0;
+  color: var(--text-light);
+  font-size: 1rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border);
+  border-top-color: var(--text-main);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ===== Responsive ===== */
+@media (max-width: 1024px) {
+  #restaurant-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .filter-area { top: 0; padding: 20px 0; }
+
+  .filter-row {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .filter-label { min-width: 30px; }
+
+  .page-header { padding: 60px 0; }
+  .page-header h1 { font-size: 2rem; }
+
+  .result-info { flex-direction: column; align-items: flex-start; gap: 12px; }
+}
+
+@media (max-width: 540px) {
+  #restaurant-grid { grid-template-columns: 1fr; }
+
+  .search-bar { flex-direction: column; gap: 8px; }
+  .search-bar input, .search-bar button { width: 100%; }
+}
+
+/* ===== Skeleton Loading ===== */
+.skeleton-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.skeleton-img {
+  height: 240px;
+  background: var(--border);
+  animation: pulse 1.5s infinite ease-in-out;
+}
+.skeleton-body {
+  padding: 24px;
+}
+.skeleton-line {
+  height: 16px;
+  background: var(--border);
+  margin-bottom: 12px;
+  border-radius: 4px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 0.3; }
+  100% { opacity: 0.6; }
+}

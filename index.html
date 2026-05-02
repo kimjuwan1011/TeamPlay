@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PLATE. - Premium Dining</title>
+  <meta name="description" content="Discover premium dining experiences across the country with PLATE.">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <script>
+    const savedTheme = localStorage.getItem('teamplay_theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  </script>
+</head>
+
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header id="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
+          stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
+          <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path>
+          <path d="M7 2v20"></path>
+          <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"></path>
+        </svg>
+        PLATE<span>.</span>
+      </a>
+      <nav class="nav" aria-label="주요 메뉴">
+        <a href="index.html" class="active">홈</a>
+        <a href="list.html">다이닝 탐색</a>
+        <a href="bookmark.html">찜</a>
+        <button id="themeToggle" class="theme-toggle" aria-label="다크모드 전환">
+          <svg id="themeIcon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2"
+            fill="none" stroke-linecap="round" stroke-linejoin="round"></svg>
+        </button>
+      </nav>
+      <button class="nav-toggle" aria-label="메뉴 열기" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ===== HERO SLIDER ===== -->
+    <section class="hero-slider" aria-label="추천 맛집 슬라이드">
+      <div class="slides-wrapper" id="slidesWrapper"></div>
+      <button class="slider-btn prev" id="sliderPrev" aria-label="이전 슬라이드">&#8249;</button>
+      <button class="slider-btn next" id="sliderNext" aria-label="다음 슬라이드">&#8250;</button>
+      <div class="slider-dots" id="sliderDots" role="tablist" aria-label="슬라이드 선택"></div>
+    </section>
+
+    <!-- ===== REGION SECTION ===== -->
+    <section class="region-section reveal" aria-labelledby="regionTitle">
+      <div class="container">
+        <h2 class="section-title" id="regionTitle">지역별 다이닝 탐색</h2>
+        <p class="section-subtitle">원하는 지역을 선택해 근사한 공간을 바로 찾아보세요</p>
+        <div class="region-grid" id="regionGrid" role="list"></div>
+      </div>
+    </section>
+
+    <!-- ===== RECOMMENDED SECTION ===== -->
+    <section class="recommend-section reveal" aria-labelledby="recommendTitle">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title" id="recommendTitle">에디터 추천 다이닝</h2>
+            <p class="section-subtitle">엄선한 전국 프리미엄 다이닝 베스트</p>
+          </div>
+          <a href="list.html" class="btn btn-outline">전체 보기 →</a>
+        </div>
+        <div class="recommend-grid" id="recommendGrid" role="list"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer id="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <div class="logo" style="display:flex;align-items:center;">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
+              stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
+              <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path>
+              <path d="M7 2v20"></path>
+              <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"></path>
+            </svg>
+            PLATE<span style="color:var(--text-sub)">.</span>
+          </div>
+          <p class="desc">
+            Discover and savor the finest culinary experiences.<br>
+            Welcome to PLATE.
+          </p>
+        </div>
+        <div class="footer-info">
+          <h4>팀 소개</h4>
+          <p>
+            팀명: PLATE.<br>
+            2학년 개발 리드 · 1학년 디자인 보조<br>
+            기술 스택: HTML · CSS · JavaScript<br>
+            데이터: 카카오 로컬 API
+          </p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 PLATE. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/index.js"></script>
+</body>
+
+</html>

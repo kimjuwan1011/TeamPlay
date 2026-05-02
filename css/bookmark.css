@@ -1,0 +1,57 @@
+/* ===== Page Header ===== */
+.page-header {
+  background: var(--text-main);
+  color: var(--btn-text);
+  padding: 80px 0;
+  text-align: center;
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin-bottom: 16px;
+  letter-spacing: -1px;
+}
+
+.page-header p {
+  font-size: 1.1rem;
+  opacity: 0.8;
+}
+
+/* ===== Bookmark Section ===== */
+.bookmark-section {
+  padding: 60px 0 100px;
+  background: var(--bg-light);
+  min-height: 50vh;
+}
+
+.bookmark-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 32px;
+}
+
+/* ===== Empty State ===== */
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.empty-state h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 12px;
+}
+
+.empty-state p {
+  font-size: 1.05rem;
+  color: var(--text-sub);
+}
+
+@media (max-width: 768px) {
+  .page-header { padding: 60px 0; }
+  .page-header h1 { font-size: 2rem; }
+  .bookmark-section { padding: 40px 0 60px; }
+  .bookmark-grid { gap: 20px; }
+}

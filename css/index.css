@@ -1,0 +1,222 @@
+/* ===== Hero Slider ===== */
+.hero-slider {
+  position: relative;
+  width: 100%;
+  height: 600px;
+  overflow: hidden;
+  background: #000;
+}
+
+.slides-wrapper {
+  display: flex;
+  height: 100%;
+  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.slide {
+  min-width: 100%;
+  height: 100%;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.6;
+  transition: transform 6s linear;
+}
+
+.slide.active img {
+  transform: scale(1.05);
+}
+
+.slide-caption {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #fff;
+  width: 90%;
+  max-width: 800px;
+}
+
+.slide-caption h2 {
+  font-size: 3.5rem;
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 16px;
+  letter-spacing: -1px;
+}
+
+.slide-caption p {
+  font-size: 1.25rem;
+  opacity: 0.9;
+  font-weight: 400;
+}
+
+/* Slider Controls */
+.slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 10;
+  border: 1px solid rgba(255,255,255,0.2);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+}
+
+.slider-btn:hover { 
+  background: #fff; 
+  color: #000; 
+  transform: translateY(-50%) scale(1.1);
+}
+
+.slider-btn.prev { left: 40px; }
+.slider-btn.next { right: 40px; }
+
+.slider-dots {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  z-index: 10;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background: rgba(255,255,255,0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dot.active {
+  background: #fff;
+  width: 32px;
+}
+
+/* ===== Region Section ===== */
+.region-section {
+  padding: 80px 0 60px;
+  background: var(--bg-light);
+}
+
+.region-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.region-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 32px 16px;
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--text-main);
+  transition: all var(--transition);
+  cursor: pointer;
+}
+
+.region-card .region-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--secondary);
+  border-radius: 50%;
+  transition: all var(--transition);
+  color: var(--text-main);
+}
+
+.region-card .region-icon svg {
+  width: 32px;
+  height: 32px;
+  transition: transform var(--transition);
+}
+
+.region-card:hover .region-icon svg {
+  transform: scale(1.1);
+}
+
+.region-card:hover {
+  border-color: var(--text-main);
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-md);
+}
+
+.region-card:hover .region-icon {
+  background: var(--text-main);
+  color: var(--btn-text);
+}
+
+/* ===== Recommended Section ===== */
+.recommend-section {
+  padding: 80px 0 100px;
+  background: var(--bg-light);
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+.recommend-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1024px) {
+  .recommend-grid { grid-template-columns: repeat(2, 1fr); }
+  .region-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .hero-slider { height: 480px; }
+
+  .slide-caption h2 { font-size: 2.2rem; }
+  .slide-caption p { font-size: 1rem; }
+  
+  .slider-btn { width: 44px; height: 44px; font-size: 1.2rem; left: 16px; }
+  .slider-btn.next { right: 16px; }
+
+  .recommend-grid { grid-template-columns: 1fr; }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .region-grid { grid-template-columns: repeat(2, 1fr); }
+}

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>다이닝 탐색 - PLATE.</title>
+  <meta name="description" content="전국 프리미엄 다이닝 목록을 지역별, 음식 종류별로 필터링하세요.">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/list.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <script>
+    const savedTheme = localStorage.getItem('teamplay_theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  </script>
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header id="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path><path d="M7 2v20"></path><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"></path></svg>
+        PLATE<span>.</span>
+      </a>
+      <nav class="nav" aria-label="주요 메뉴">
+        <a href="index.html">홈</a>
+        <a href="list.html" class="active">다이닝 탐색</a>
+        <a href="bookmark.html">저장한 공간</a>
+        <button id="themeToggle" class="theme-toggle" aria-label="다크모드 전환">
+          <svg id="themeIcon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></svg>
+        </button>
+      </nav>
+      <button class="nav-toggle" aria-label="메뉴 열기">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ===== PAGE HEADER ===== -->
+    <div class="page-header">
+      <div class="container">
+        <h1>프리미엄 다이닝 탐색</h1>
+        <p>지역과 음식 종류로 당신만의 특별한 공간을 찾아보세요</p>
+      </div>
+    </div>
+
+    <!-- ===== FILTER AREA ===== -->
+    <div class="filter-area" role="search" aria-label="다이닝 필터">
+      <div class="container">
+
+        <!-- Kakao API 검색 -->
+        <div class="search-bar">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="지역명 또는 음식 키워드로 카카오 API 검색 (예: 강남 고기집)"
+            aria-label="다이닝 검색"
+          >
+          <button id="searchBtn" aria-label="검색하기">검색</button>
+          <button id="clearSearchBtn" class="btn btn-outline" aria-label="검색 초기화" style="white-space:nowrap">초기화</button>
+        </div>
+
+        <!-- 지역 필터 -->
+        <div class="filter-row">
+          <span class="filter-label">지역</span>
+          <div class="filter-group" role="group" aria-label="지역 필터">
+            <button class="filter-btn active" data-region="all">전체</button>
+            <button class="filter-btn" data-region="서울">서울</button>
+            <button class="filter-btn" data-region="부산">부산</button>
+            <button class="filter-btn" data-region="대구">대구</button>
+            <button class="filter-btn" data-region="광주">광주</button>
+            <button class="filter-btn" data-region="대전">대전</button>
+            <button class="filter-btn" data-region="인천">인천</button>
+            <button class="filter-btn" data-region="제주">제주</button>
+          </div>
+        </div>
+
+        <!-- 카테고리 필터 -->
+        <div class="filter-row">
+          <span class="filter-label">종류</span>
+          <div class="filter-group" role="group" aria-label="음식 종류 필터">
+            <button class="filter-btn active" data-category="all">전체</button>
+            <button class="filter-btn" data-category="한식">한식</button>
+            <button class="filter-btn" data-category="중식">중식</button>
+            <button class="filter-btn" data-category="일식">일식</button>
+            <button class="filter-btn" data-category="양식">양식</button>
+            <button class="filter-btn" data-category="기타">기타</button>
+          </div>
+        </div>
+
+        <!-- 별점 필터 -->
+        <div class="filter-row">
+          <span class="filter-label">별점</span>
+          <div class="filter-group" role="group" aria-label="별점 필터">
+            <button class="filter-btn active" data-rating="all">전체</button>
+            <button class="filter-btn" data-rating="4.5">4.5+</button>
+            <button class="filter-btn" data-rating="4.0">4.0+</button>
+            <button class="filter-btn" data-rating="3.5">3.5+</button>
+          </div>
+        </div>
+
+        <!-- 정렬 -->
+        <div class="filter-row">
+          <span class="filter-label">정렬</span>
+          <div class="filter-group" role="group" aria-label="정렬">
+            <button class="filter-btn active" data-sort="default">기본순</button>
+            <button class="filter-btn" data-sort="rating">별점 높은순</button>
+            <button class="filter-btn" data-sort="name">이름순</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ===== LIST SECTION ===== -->
+    <section class="list-section">
+      <div class="container">
+        <div class="result-info">
+          <p class="result-count" id="resultCount">검색 결과 <strong>0</strong>개</p>
+          <span class="search-mode-badge" id="searchModeBadge" style="display:none;">카카오 API 검색 결과</span>
+        </div>
+        <div id="restaurant-grid" role="list" aria-label="맛집 목록">
+          <!-- JS로 렌더링 -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer id="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <div class="logo" style="display:flex;align-items:center;">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path><path d="M7 2v20"></path><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"></path></svg>
+            PLATE<span style="color:var(--text-sub)">.</span>
+          </div>
+          <p class="desc">
+            Discover and savor the finest culinary experiences.<br>
+            Welcome to PLATE.
+          </p>
+        </div>
+        <div class="footer-info">
+          <h4>팀 소개</h4>
+          <p>
+            팀명: PLATE.<br>
+            2학년 개발 리드 · 1학년 디자인 보조<br>
+            기술 스택: HTML · CSS · JavaScript<br>
+            데이터: 카카오 로컬 API
+          </p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 PLATE. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/list.js"></script>
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>다이닝 상세 - PLATE.</title>
+  <meta name="description" content="프리미엄 다이닝 상세 정보를 확인하세요.">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/detail.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <script>
+    const savedTheme = localStorage.getItem('teamplay_theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  </script>
+  <!-- 카카오 지도 SDK: autoload=false로 로드 후 body 끝에서 수동 초기화 -->
+  <script type="text/javascript"
+    src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=e9ae8867dfd48ffbbcdedc1c3e52d562&autoload=false">
+  </script>
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header id="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path><path d="M7 2v20"></path><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"></path></svg>
+        PLATE<span>.</span>
+      </a>
+      <nav class="nav" aria-label="주요 메뉴">
+        <a href="index.html">홈</a>
+        <a href="list.html">다이닝 탐색</a>
+        <a href="bookmark.html">저장한 공간</a>
+        <button id="themeToggle" class="theme-toggle" aria-label="다크모드 전환">
+          <svg id="themeIcon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></svg>
+        </button>
+      </nav>
+      <button class="nav-toggle" aria-label="메뉴 열기">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===== BACK BAR ===== -->
+  <div class="back-bar">
+    <div class="container">
+      <a href="list.html" class="back-btn" aria-label="목록으로 돌아가기">
+        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        목록으로 돌아가기
+      </a>
+    </div>
+  </div>
+
+  <main id="detailMain">
+
+    <!-- ===== HERO IMAGE ===== -->
+    <div class="detail-hero reveal">
+      <img id="detailHeroImg" src="" alt="" loading="eager">
+    </div>
+
+    <!-- ===== DETAIL LAYOUT ===== -->
+    <div class="detail-layout reveal">
+      <div class="container">
+        <div class="detail-grid">
+
+          <!-- 왼쪽: 탭 콘텐츠 -->
+          <div class="detail-content">
+
+            <!-- 가게 정보 헤더 -->
+            <div class="detail-info-header">
+              <div class="detail-tags">
+                <span class="tag region" id="detailRegionTag"></span>
+                <span class="tag category" id="detailCategoryTag"></span>
+              </div>
+              <h1 class="detail-name" id="detailName"></h1>
+              <p class="detail-address">
+                <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                <span id="detailAddress"></span>
+              </p>
+            </div>
+
+            <!-- 탭 네비게이션 -->
+            <div class="tab-nav" role="tablist" aria-label="상세 정보 탭">
+              <button class="tab-btn active" data-tab="menu"
+                role="tab" aria-selected="true" aria-controls="tab-menu">
+                메뉴 소개
+              </button>
+              <button class="tab-btn" data-tab="location"
+                role="tab" aria-selected="false" aria-controls="tab-location">
+                위치 안내
+              </button>
+              <button class="tab-btn" data-tab="review"
+                role="tab" aria-selected="false" aria-controls="tab-review">
+                한줄 리뷰
+              </button>
+            </div>
+
+            <!-- 탭 패널: 메뉴 소개 -->
+            <div class="tab-panel active" id="tab-menu" role="tabpanel" aria-labelledby="tab-menu-btn">
+              <div class="menu-list" id="menuList">
+                <!-- JS로 렌더링 -->
+              </div>
+            </div>
+
+            <!-- 탭 패널: 위치 안내 -->
+            <div class="tab-panel" id="tab-location" role="tabpanel" aria-labelledby="tab-location-btn">
+              <!-- 카카오 SDK 지도 -->
+              <div id="map" aria-label="가게 위치 지도"></div>
+              <!-- SDK 로드 실패 시 fallback -->
+              <div id="mapFallback" style="display:none; text-align:center; padding:60px 20px; background:var(--bg-light); border-radius:12px; border:1px dashed var(--border);">
+                <svg viewBox="0 0 24 24" width="48" height="48" stroke="var(--text-light)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 16px;"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
+                <p style="color:#666; margin-bottom:20px;" id="mapFallbackAddr"></p>
+                <a id="kakaoMapLink" href="#" target="_blank" rel="noopener"
+                  style="display:inline-block; padding:12px 28px; background:#e8472a; color:#fff; border-radius:8px; font-weight:700; font-size:0.95rem;">
+                  카카오맵에서 보기
+                </a>
+              </div>
+              <div class="map-address">
+                <svg viewBox="0 0 24 24" width="16" height="16" stroke="var(--primary)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                <span id="mapAddress"></span>
+              </div>
+            </div>
+
+            <!-- 탭 패널: 한줄 리뷰 -->
+            <div class="tab-panel" id="tab-review" role="tabpanel" aria-labelledby="tab-review-btn">
+              <div class="review-placeholder">
+                <svg viewBox="0 0 24 24" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                <p>아직 등록된 리뷰가 없습니다.</p>
+                <p style="color:var(--text-light);font-size:0.9rem;margin-top:4px">첫 번째 리뷰를 남겨보세요!</p>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- 오른쪽: 사이드바 -->
+          <aside class="detail-sidebar" aria-label="가게 기본 정보">
+            <div class="sidebar-card">
+              <h3>기본 정보</h3>
+              <div class="info-row">
+                <span class="info-label">지역</span>
+                <span class="info-value" id="sidebarRegion"></span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">종류</span>
+                <span class="info-value" id="sidebarCategory"></span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">주소</span>
+                <span class="info-value" id="sidebarAddress"></span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">전화</span>
+                <span class="info-value" id="sidebarPhone"></span>
+              </div>
+            </div>
+          </aside>
+
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer id="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <div class="logo" style="display:flex;align-items:center;">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path><path d="M7 2v20"></path><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"></path></svg>
+            PLATE<span style="color:var(--text-sub)">.</span>
+          </div>
+          <p class="desc">
+            Discover and savor the finest culinary experiences.<br>
+            Welcome to PLATE.
+          </p>
+        </div>
+        <div class="footer-info">
+          <h4>팀 소개</h4>
+          <p>
+            팀명: PLATE.<br>
+            2학년 개발 리드 · 1학년 디자인 보조<br>
+            기술 스택: HTML · CSS · JavaScript<br>
+            데이터: 카카오 로컬 API
+          </p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 PLATE. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/detail.js"></script>
+  <!-- detail.js 로드 후 kakao.maps.load 호출 → onKakaoSDKLoad 함수가 이미 정의된 상태 -->
+  <script>
+    if (typeof kakao !== 'undefined') {
+      kakao.maps.load(onKakaoSDKLoad);
+    } else {
+      console.error('카카오 지도 SDK 로드 실패 — Network 탭에서 dapi.kakao.com 요청 상태 확인');
+    }
+  </script>
+</body>
+</html>

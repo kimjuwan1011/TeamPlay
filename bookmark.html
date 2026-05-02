@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>저장한 공간 - PLATE.</title>
+  <meta name="description" content="내가 찜한 다이닝 리스트를 확인하세요.">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/bookmark.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <script>
+    const savedTheme = localStorage.getItem('teamplay_theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  </script>
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header id="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path><path d="M7 2v20"></path><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"></path></svg>
+        PLATE<span>.</span>
+      </a>
+      <nav class="nav" aria-label="주요 메뉴">
+        <a href="index.html">홈</a>
+        <a href="list.html">다이닝 탐색</a>
+        <a href="bookmark.html" class="active">저장한 공간</a>
+        <button id="themeToggle" class="theme-toggle" aria-label="다크모드 전환">
+          <svg id="themeIcon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></svg>
+        </button>
+      </nav>
+      <button class="nav-toggle" aria-label="메뉴 열기">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ===== PAGE HEADER ===== -->
+    <div class="page-header">
+      <div class="container">
+        <h1>저장한 공간</h1>
+        <p>내가 하트를 누른 특별한 다이닝 리스트</p>
+      </div>
+    </div>
+
+    <!-- ===== BOOKMARK LIST ===== -->
+    <section class="bookmark-section">
+      <div class="container">
+        <div id="bookmarkGrid" class="bookmark-grid" role="list"></div>
+        <div id="emptyState" class="empty-state" style="display: none;">
+          <svg viewBox="0 0 24 24" width="64" height="64" stroke="var(--border)" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:24px"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+          <h2>아직 저장된 공간이 없습니다</h2>
+          <p>마음에 드는 다이닝의 하트를 눌러 나만의 리스트를 만들어보세요.</p>
+          <a href="list.html" class="btn btn-primary" style="margin-top:24px">다이닝 탐색하기</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer id="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <div class="logo" style="display:flex;align-items:center;">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path><path d="M7 2v20"></path><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"></path></svg>
+            PLATE<span style="color:var(--text-sub)">.</span>
+          </div>
+          <p class="desc">
+            Discover and savor the finest culinary experiences.<br>
+            Welcome to PLATE.
+          </p>
+        </div>
+        <div class="footer-info">
+          <p>
+            팀명: PLATE.<br>
+            2학년 개발 리드 · 1학년 디자인 보조<br>
+            기술 스택: HTML · CSS · JavaScript<br>
+            데이터: 카카오 로컬 API
+          </p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 PLATE. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/bookmark.js"></script>
+</body>
+</html>
