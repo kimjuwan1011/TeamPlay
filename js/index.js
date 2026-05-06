@@ -96,7 +96,6 @@ function initRegionCards() {
 function initRecommendCards() {
   const grid = document.getElementById('recommendGrid');
 
-  // 지역별 대표 맛집 각 1개씩 6개 선택
   const picks = ["서울", "부산", "대구", "광주", "대전", "제주"]
     .map(region => restaurants.find(r => r.region === region))
     .filter(Boolean);
@@ -131,11 +130,47 @@ function createCard(r) {
   `;
   article.addEventListener('click', () => { location.href = `detail.html?id=${r.id}`; });
   article.addEventListener('keydown', e => { if (e.key === 'Enter') location.href = `detail.html?id=${r.id}`; });
-  
+
   article.classList.add('reveal');
   if (window.observeReveal) window.observeReveal(article);
 
   return article;
+}
+
+/* ===== 랜덤 맛집 추천 ===== */
+function initRandomPick() {
+  const btn = document.getElementById('randomPickBtn');
+  const resultBox = document.getElementById('randomResult');
+  if (!btn || !resultBox) return;
+
+  btn.addEventListener('click', () => {
+    // 버튼 애니메이션
+    btn.classList.add('spinning');
+    setTimeout(() => btn.classList.remove('spinning'), 600);
+
+    // 랜덤 맛집 선택
+    const random = restaurants[Math.floor(Math.random() * restaurants.length)];
+
+    // 결과 카드 렌더링
+    resultBox.innerHTML = `
+      <div class="random-card" onclick="location.href='detail.html?id=${random.id}'">
+        <div class="random-card-img">
+          <img src="${random.image}" alt="${random.name}" loading="lazy">
+        </div>
+        <div class="random-card-body">
+          <div class="card-tags">
+            <span class="tag region">${random.region}</span>
+            <span class="tag category">${random.category}</span>
+          </div>
+          <h3 class="random-card-name">${random.name}</h3>
+          <p class="random-card-address">${random.address}</p>
+          <p class="random-card-menu">${random.menu.split('/')[0].trim()}</p>
+          <span class="random-card-link">상세 보기 →</span>
+        </div>
+      </div>
+    `;
+    resultBox.classList.add('show');
+  });
 }
 
 /* ===== Nav Mobile Toggle ===== */
@@ -151,5 +186,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initSlider();
   initRegionCards();
   initRecommendCards();
+  initRandomPick();
   initNav();
 });
