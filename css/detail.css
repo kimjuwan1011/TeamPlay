@@ -186,23 +186,138 @@
 }
 
 /* ===== Review Tab ===== */
-.review-placeholder {
-  text-align: center;
-  padding: 80px 0;
-  color: var(--text-light);
-  background: var(--bg-light);
+.review-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 28px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   border-radius: var(--radius-md);
+  margin-bottom: 32px;
+}
+
+.review-form-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.review-form input[type="text"] {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  background: var(--bg-light);
+  color: var(--text-main);
+  outline: none;
+  transition: border-color var(--transition);
+}
+
+.review-form input[type="text"]:focus {
+  border-color: var(--text-main);
+}
+
+.review-form textarea {
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  background: var(--bg-light);
+  color: var(--text-main);
+  resize: vertical;
+  outline: none;
+  font-family: inherit;
+  transition: border-color var(--transition);
+}
+
+.review-form textarea:focus {
+  border-color: var(--text-main);
+}
+
+.review-submit-btn {
+  align-self: flex-end;
+  padding: 10px 28px;
+  font-size: 0.95rem;
+}
+
+/* 별점 */
+.star-rating {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 2px;
+}
+
+.star-rating input { display: none; }
+
+.star-rating label {
+  font-size: 28px;
+  color: var(--border);
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.star-rating input:checked ~ label,
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+  color: #f5a623;
+}
+
+/* 리뷰 목록 */
+.review-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.review-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 20px 24px;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.review-nickname {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text-main);
+}
+
+.review-date {
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+
+.review-stars {
+  color: #f5a623;
+  font-size: 16px;
+  margin-bottom: 10px;
+  letter-spacing: 2px;
+}
+
+.review-content {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-sub);
+}
+
+.review-empty {
+  text-align: center;
+  padding: 48px 0;
+  color: var(--text-light);
+  font-size: 0.95rem;
+  background: var(--bg-card);
   border: 1px dashed var(--border);
+  border-radius: var(--radius-md);
 }
-
-.review-placeholder svg {
-  width: 48px;
-  height: 48px;
-  stroke: var(--border);
-  margin-bottom: 16px;
-}
-
-.review-placeholder p { font-size: 1.05rem; margin-top: 8px; color: var(--text-sub); }
 
 /* ===== Sidebar ===== */
 .detail-sidebar {
@@ -259,9 +374,7 @@
 
 /* ===== Responsive ===== */
 @media (max-width: 1024px) {
-  .detail-grid {
-    grid-template-columns: 1fr;
-  }
+  .detail-grid { grid-template-columns: 1fr; }
   .detail-sidebar { position: static; }
 }
 
@@ -270,4 +383,6 @@
   .detail-name { font-size: 2rem; }
   .tab-btn { padding: 12px 20px; font-size: 0.95rem; }
   .detail-layout { padding: 40px 0 60px; }
+  .review-form-row { flex-direction: column; align-items: flex-start; }
+  .review-submit-btn { align-self: stretch; text-align: center; }
 }
