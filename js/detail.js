@@ -11,38 +11,29 @@ function getRestaurant(id) {
 function renderDetail(r) {
   document.title = `${r.name} - 맛집 탐험대`;
 
-  // Hero image
   const heroImg = document.getElementById('detailHeroImg');
   if (heroImg) {
     heroImg.src = r.image;
     heroImg.alt = r.name;
   }
 
-  // Tags
   document.getElementById('detailRegionTag').textContent = r.region;
   document.getElementById('detailCategoryTag').textContent = r.category;
-
-  // Name & address
   document.getElementById('detailName').textContent = r.name;
   document.getElementById('detailAddress').textContent = r.address;
 
-  // Sidebar info rows
   document.getElementById('sidebarRegion').textContent = r.region;
   document.getElementById('sidebarCategory').textContent = r.category;
   document.getElementById('sidebarAddress').textContent = r.address;
 
-  // 위치 탭 주소 텍스트
   const mapAddr = document.getElementById('mapAddress');
   if (mapAddr) mapAddr.textContent = r.address;
 
-  // 전화번호 사이드바 (있을 경우)
   const sidebarPhone = document.getElementById('sidebarPhone');
   if (sidebarPhone) sidebarPhone.textContent = r.phone || '정보 없음';
 
-  // Menu tab
   renderMenuTab(r.menu);
 
-  // Store for map init
   window._currentRestaurant = r;
 }
 
@@ -97,13 +88,11 @@ let mapInitialized = false;
 let kakaoSDKLoaded = false;
 let locationTabPending = false;
 
-// detail.html 끝 <script>kakao.maps.load(onKakaoSDKLoad)</script> 에서 호출됨
 function onKakaoSDKLoad() {
   kakaoSDKLoaded = true;
   if (locationTabPending) drawMap();
 }
 
-// 위치 탭 클릭 시 호출
 function initKakaoMap() {
   if (mapInitialized) return;
   if (!kakaoSDKLoaded) {
@@ -156,6 +145,75 @@ function showMapFallback() {
   }
 }
 
+/* ===== 리뷰 기능 ===== */
+function getReviewKey(id) {
+  return `reviews_${id}`;
+}
+
+function getReviews(id) {
+  return JSON.parse(localStorage.getItem(getReviewKey(id)) || '[]');
+}
+
+function saveReview(id, review) {
+  const reviews = getReviews(id);
+  reviews.unshift(review);
+  localStorage.setItem(getReviewKey(id), JSON.stringify(reviews));
+}
+
+function renderReviews(id) {
+  const list = document.getElementById('reviewList');
+  if (!list) return;
+
+  const reviews = getReviews(id);
+
+  if (reviews.length === 0) {
+    list.innerHTML = `<p class="review-empty">아직 작성된 리뷰가 없어요. 첫 번째 리뷰를 남겨보세요!</p>`;
+    return;
+  }
+
+  list.innerHTML = reviews.map(r => `
+    <div class="review-item">
+      <div class="review-header">
+        <span class="review-nickname">${r.nickname}</span>
+        <span class="review-date">${r.date}</span>
+      </div>
+      <div class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
+      <p class="review-content">${r.content}</p>
+    </div>
+  `).join('');
+}
+
+function initReview(id) {
+  const form = document.getElementById('reviewForm');
+  if (!form) return;
+
+  renderReviews(id);
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const nickname = document.getElementById('reviewNickname').value.trim();
+    const rating = parseInt(document.querySelector('input[name="rating"]:checked')?.value || '0');
+    const content = document.getElementById('reviewContent').value.trim();
+
+    if (!nickname || !rating || !content) {
+      alert('별점, 닉네임, 내용을 모두 입력해주세요.');
+      return;
+    }
+
+    const review = {
+      nickname,
+      rating,
+      content,
+      date: new Date().toLocaleDateString('ko-KR')
+    };
+
+    saveReview(id, review);
+    renderReviews(id);
+    form.reset();
+  });
+}
+
 /* ===== Not Found ===== */
 function renderNotFound() {
   const main = document.getElementById('detailMain');
@@ -191,11 +249,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   renderDetail(restaurant);
   initTabs();
+  initReview(id);
 
-  // Highlight active nav
   const navLinks = document.querySelectorAll('.nav a');
   navLinks.forEach(a => {
     if (a.getAttribute('href') === 'list.html') a.classList.add('active');
   });
 });
-
