@@ -117,16 +117,16 @@ async function searchKakao(query) {
     <div class="skeleton-card">
       <div class="skeleton-img"></div>
       <div class="skeleton-body">
-        <div class="skeleton-line" style="width: 40%;"></div>
-        <div class="skeleton-line" style="width: 80%; height: 24px; margin-top: 12px;"></div>
-        <div class="skeleton-line" style="width: 100%; margin-top: 16px;"></div>
-        <div class="skeleton-line" style="width: 60%;"></div>
+        <div class="skeleton-line sk-w40"></div>
+        <div class="skeleton-line sk-w80"></div>
+        <div class="skeleton-line sk-w100"></div>
+        <div class="skeleton-line sk-w60"></div>
       </div>
     </div>
   `).join('');
 
   const badge = document.getElementById('searchModeBadge');
-  if (badge) badge.style.display = 'inline';
+  if (badge) badge.classList.add('show');
 
   try {
     const url = `https://dapi.kakao.com/v2/local/search/keyword.json?query=${encodeURIComponent(query + ' 맛집')}&category_group_code=FD6&size=15`;
@@ -158,7 +158,7 @@ async function searchKakao(query) {
     grid.innerHTML = `
       <div class="no-result">
         검색 중 오류가 발생했습니다.<br>
-        <small style="color:#aaa">CORS 제한이 있을 수 있습니다. 로컬 데이터에서 검색합니다.</small>
+        <small class="error-fallback-text">CORS 제한이 있을 수 있습니다. 로컬 데이터에서 검색합니다.</small>
       </div>
     `;
     // Fallback: 로컬 데이터 이름 검색
@@ -181,7 +181,7 @@ function initFilters() {
     btn.addEventListener('click', () => {
       kakaoResults = null;
       const badge = document.getElementById('searchModeBadge');
-      if (badge) badge.style.display = 'none';
+      if (badge) badge.classList.remove('show');
       document.getElementById('searchInput').value = '';
 
       activeRegion = btn.dataset.region;
@@ -195,7 +195,7 @@ function initFilters() {
     btn.addEventListener('click', () => {
       kakaoResults = null;
       const badge = document.getElementById('searchModeBadge');
-      if (badge) badge.style.display = 'none';
+      if (badge) badge.classList.remove('show');
       document.getElementById('searchInput').value = '';
 
       activeCategory = btn.dataset.category;
@@ -235,7 +235,7 @@ function initSearch() {
     if (!q) {
       kakaoResults = null;
       const badge = document.getElementById('searchModeBadge');
-      if (badge) badge.style.display = 'none';
+      if (badge) badge.classList.remove('show');
       updateView();
       return;
     }
@@ -250,7 +250,7 @@ function initSearch() {
       input.value = '';
       kakaoResults = null;
       const badge = document.getElementById('searchModeBadge');
-      if (badge) badge.style.display = 'none';
+      if (badge) badge.classList.remove('show');
       updateView();
     });
   }

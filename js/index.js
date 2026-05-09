@@ -49,7 +49,7 @@ function initSlider() {
 
   function goToSlide(n) {
     current = (n + sliderData.length) % sliderData.length;
-    wrapper.style.transform = `translateX(-${current * 100}%)`;
+    wrapper.style.setProperty('--slide-idx', current);
     document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
   }
 
@@ -141,6 +141,7 @@ function createCard(r) {
 function initRandomPick() {
   const btn = document.getElementById('randomPickBtn');
   const resultBox = document.getElementById('randomResult');
+  const regionSelect = document.getElementById('randomRegionSelect');
   if (!btn || !resultBox) return;
 
   btn.addEventListener('click', () => {
@@ -148,8 +149,20 @@ function initRandomPick() {
     btn.classList.add('spinning');
     setTimeout(() => btn.classList.remove('spinning'), 600);
 
+    // 지역 필터링
+    let filtered = restaurants;
+    if (regionSelect && regionSelect.value !== 'all') {
+      filtered = restaurants.filter(r => r.region === regionSelect.value);
+    }
+
+    if (filtered.length === 0) {
+      resultBox.innerHTML = '<p class="no-region-result">해당 지역의 맛집 정보가 없습니다.</p>';
+      resultBox.classList.add('show');
+      return;
+    }
+
     // 랜덤 맛집 선택
-    const random = restaurants[Math.floor(Math.random() * restaurants.length)];
+    const random = filtered[Math.floor(Math.random() * filtered.length)];
 
     // 결과 카드 렌더링
     resultBox.innerHTML = `

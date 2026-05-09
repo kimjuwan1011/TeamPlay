@@ -18,13 +18,13 @@ function renderBookmarks() {
   const marks = JSON.parse(localStorage.getItem('teamplay_bookmarks') || '[]');
   
   if (marks.length === 0) {
-    grid.style.display = 'none';
-    emptyState.style.display = 'block';
+    grid.classList.add('hidden');
+    emptyState.classList.remove('hidden');
     return;
   }
   
-  grid.style.display = 'grid';
-  emptyState.style.display = 'none';
+  grid.classList.remove('hidden');
+  emptyState.classList.add('hidden');
   grid.innerHTML = '';
   
   // get data

@@ -4,13 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PLATE. - Premium Dining</title>
-  <meta name="description" content="Discover premium dining experiences across the country with PLATE.">
-  <link rel="stylesheet" href="css/reset.css">
+  <title>맛집 추천 사이트 - PLATE</title>
   <link rel="stylesheet" href="css/common.css">
   <link rel="stylesheet" href="css/index.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
   <script>
     const savedTheme = localStorage.getItem('teamplay_theme') || 'light';
     document.documentElement.setAttribute('data-theme', savedTheme);
@@ -19,116 +15,87 @@
 
 <body>
 
-  <!-- ===== HEADER ===== -->
+  <!-- 헤더 -->
   <header id="header">
     <div class="container header-inner">
       <a href="index.html" class="logo">
         <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
-          stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
+          stroke-linecap="round" stroke-linejoin="round" class="logo-icon">
           <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path>
           <path d="M7 2v20"></path>
           <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"></path>
         </svg>
-        PLATE<span>.</span>
+        PLATE
       </a>
-      <nav class="nav" aria-label="주요 메뉴">
-        <a href="index.html" class="active">홈</a>
-        <a href="list.html">다이닝 탐색</a>
-        <a href="bookmark.html">찜</a>
+      <div class="nav">
+        <a href="index.html">홈</a>
+        <a href="list.html">맛집 찾기</a>
+        <a href="bookmark.html">찜 목록</a>
         <button id="themeToggle" class="theme-toggle" aria-label="다크모드 전환">
           <svg id="themeIcon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2"
-            fill="none" stroke-linecap="round" stroke-linejoin="round"></svg>
+            fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
         </button>
-      </nav>
-      <button class="nav-toggle" aria-label="메뉴 열기" aria-expanded="false">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+      </div>
     </div>
   </header>
 
-  <main>
-    <!-- ===== HERO SLIDER ===== -->
-    <section class="hero-slider" aria-label="추천 맛집 슬라이드">
-      <div class="slides-wrapper" id="slidesWrapper"></div>
-      <button class="slider-btn prev" id="sliderPrev" aria-label="이전 슬라이드">&#8249;</button>
-      <button class="slider-btn next" id="sliderNext" aria-label="다음 슬라이드">&#8250;</button>
-      <div class="slider-dots" id="sliderDots" role="tablist" aria-label="슬라이드 선택"></div>
-    </section>
+  <!-- 슬라이드 (컨테이너 밖으로 빼서 꽉 차게) -->
+  <div class="hero-slider">
+    <div class="slides-wrapper" id="slidesWrapper"></div>
+    <button class="slider-btn prev" id="sliderPrev">&lt;</button>
+    <button class="slider-btn next" id="sliderNext">&gt;</button>
+    <div class="slider-dots" id="sliderDots"></div>
+  </div>
 
-    <!-- ===== REGION SECTION ===== -->
-    <section class="region-section reveal" aria-labelledby="regionTitle">
-      <div class="container">
-        <h2 class="section-title" id="regionTitle">지역별 다이닝 탐색</h2>
-        <p class="section-subtitle">원하는 지역을 선택해 근사한 공간을 바로 찾아보세요</p>
-        <div class="region-grid" id="regionGrid" role="list"></div>
-      </div>
-    </section>
+  <div class="container">
+    <!-- 지역별 맛집 -->
+    <div class="section">
+      <h2 class="section-title">지도에서 지역 선택하기</h2>
+      <p class="section-subtitle">어느 지역의 맛집을 찾고 싶으신가요?</p>
+      <div class="region-grid" id="regionGrid"></div>
+    </div>
 
-    <!-- ===== RANDOM PICK SECTION ===== -->
-    <section class="random-section reveal" aria-labelledby="randomTitle">
-      <div class="container">
-        <div class="random-inner">
-          <div class="random-text">
-            <h2 class="section-title" id="randomTitle">오늘 뭐 먹을지 모르겠다면?</h2>
-            <p class="section-subtitle">버튼 하나로 전국 맛집 중 랜덤 추천!</p>
-            <button id="randomPickBtn" class="btn btn-primary random-btn" aria-label="랜덤 맛집 추천받기">
-              🎲 랜덤 추천받기
-            </button>
-          </div>
-          <div id="randomResult" class="random-result"></div>
+    <!-- 랜덤 추천 -->
+    <div class="random-section">
+      <div class="random-inner">
+        <h2 class="section-title">오늘 뭐 먹지?</h2>
+        <p>선택하기 어렵다면 랜덤으로 맛집을 추천해 드립니다!</p>
+
+        <div class="random-select-wrapper">
+          <select id="randomRegionSelect" class="random-select">
+            <option value="all">전국 전체</option>
+            <option value="서울">서울</option>
+            <option value="부산">부산</option>
+            <option value="대구">대구</option>
+            <option value="광주">광주</option>
+            <option value="대전">대전</option>
+            <option value="인천">인천</option>
+            <option value="제주">제주</option>
+          </select>
         </div>
-      </div>
-    </section>
 
-    <!-- ===== RECOMMENDED SECTION ===== -->
-    <section class="recommend-section reveal" aria-labelledby="recommendTitle">
-      <div class="container">
-        <div class="section-header">
-          <div>
-            <h2 class="section-title" id="recommendTitle">에디터 추천 다이닝</h2>
-            <p class="section-subtitle">엄선한 전국 프리미엄 다이닝 베스트</p>
-          </div>
-          <a href="list.html" class="btn btn-outline">전체 보기 →</a>
-        </div>
-        <div class="recommend-grid" id="recommendGrid" role="list"></div>
+        <button id="randomPickBtn" class="btn">랜덤으로 추천받기</button>
+        <div id="randomResult" class="random-result"></div>
       </div>
-    </section>
-  </main>
+    </div>
 
-  <!-- ===== FOOTER ===== -->
+    <!-- 추천 맛집 -->
+    <div class="section">
+      <h2 class="section-title title-inline">요즘 뜨는 추천 맛집</h2>
+      <a href="list.html" class="btn btn-float">전체보기 &gt;</a>
+      <div class="clear-divider"></div>
+      <div class="recommend-grid" id="recommendGrid"></div>
+    </div>
+  </div>
+
+  <!-- 푸터 -->
   <footer id="footer">
     <div class="container">
-      <div class="footer-inner">
-        <div class="footer-brand">
-          <div class="logo" style="display:flex;align-items:center;">
-            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
-              stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
-              <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path>
-              <path d="M7 2v20"></path>
-              <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"></path>
-            </svg>
-            PLATE<span style="color:var(--text-sub)">.</span>
-          </div>
-          <p class="desc">
-            Discover and savor the finest culinary experiences.<br>
-            Welcome to PLATE.
-          </p>
-        </div>
-        <div class="footer-info">
-          <h4>팀 소개</h4>
-          <p>
-            팀명: PLATE.<br>
-            2학년 개발 리드 · 1학년 디자인 보조<br>
-            기술 스택: HTML · CSS · JavaScript<br>
-            데이터: 카카오 로컬 API
-          </p>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; 2025 PLATE. All rights reserved.</p>
-      </div>
+      <h2>PLATE 맛집 추천</h2>
+      <p>개발: 고등학교 2학년, 1학년 웹개발 프로젝트</p>
+      <p>HTML, CSS, JS.</p>
     </div>
   </footer>
 

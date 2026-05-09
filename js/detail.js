@@ -118,7 +118,7 @@ function drawMap() {
     map.relayout();
     new kakao.maps.Marker({ position: coords }).setMap(map);
     new kakao.maps.InfoWindow({
-      content: `<div style="padding:6px 10px;font-size:13px;font-weight:700;">${r.name}</div>`,
+      content: `<div class="map-info-window">${r.name}</div>`,
     }).open(map, new kakao.maps.Marker({ position: coords }));
     mapInitialized = true;
   } catch (e) {
@@ -131,10 +131,10 @@ function showMapFallback() {
   const r = window._currentRestaurant;
   if (!r) return;
 
-  document.getElementById('map').style.display = 'none';
+  document.getElementById('map').classList.add('hidden');
   const fallback = document.getElementById('mapFallback');
   if (!fallback) return;
-  fallback.style.display = 'block';
+  fallback.classList.remove('hidden');
 
   const addrEl = document.getElementById('mapFallbackAddr');
   if (addrEl) addrEl.textContent = r.address;
@@ -222,7 +222,7 @@ function renderNotFound() {
     <div class="not-found container">
       <h2>맛집을 찾을 수 없습니다</h2>
       <p>잘못된 접근이거나 삭제된 맛집입니다.</p>
-      <a href="list.html" class="btn btn-primary" style="margin-top:24px;display:inline-flex;">목록으로 돌아가기</a>
+      <a href="list.html" class="btn btn-primary btn-back">목록으로 돌아가기</a>
     </div>
   `;
 }

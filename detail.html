@@ -1,214 +1,140 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>다이닝 상세 - PLATE.</title>
-  <meta name="description" content="프리미엄 다이닝 상세 정보를 확인하세요.">
-  <link rel="stylesheet" href="css/reset.css">
+  <title>상세 페이지 - PLATE</title>
   <link rel="stylesheet" href="css/common.css">
   <link rel="stylesheet" href="css/detail.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <!-- 카카오맵 (기존 그대로 사용) -->
+  <script type="text/javascript"
+    src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=e9ae8867dfd48ffbbcdedc1c3e52d562&autoload=false"></script>
   <script>
     const savedTheme = localStorage.getItem('teamplay_theme') || 'light';
     document.documentElement.setAttribute('data-theme', savedTheme);
   </script>
-  <script type="text/javascript"
-    src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=e9ae8867dfd48ffbbcdedc1c3e52d562&autoload=false">
-  </script>
 </head>
+
 <body>
 
-  <!-- ===== HEADER ===== -->
+  <!-- 헤더 -->
   <header id="header">
     <div class="container header-inner">
       <a href="index.html" class="logo">
-        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path><path d="M7 2v20"></path><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"></path></svg>
-        PLATE<span>.</span>
+        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
+          stroke-linecap="round" stroke-linejoin="round" class="logo-icon">
+          <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path>
+          <path d="M7 2v20"></path>
+          <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"></path>
+        </svg>
+        PLATE
       </a>
-      <nav class="nav" aria-label="주요 메뉴">
+      <div class="nav">
         <a href="index.html">홈</a>
-        <a href="list.html">다이닝 탐색</a>
-        <a href="bookmark.html">저장한 공간</a>
+        <a href="list.html">맛집 찾기</a>
+        <a href="bookmark.html">찜 목록</a>
         <button id="themeToggle" class="theme-toggle" aria-label="다크모드 전환">
-          <svg id="themeIcon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></svg>
+          <svg id="themeIcon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2"
+            fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
         </button>
-      </nav>
-      <button class="nav-toggle" aria-label="메뉴 열기">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+      </div>
     </div>
   </header>
 
-  <!-- ===== BACK BAR ===== -->
-  <div class="back-bar">
-    <div class="container">
-      <a href="list.html" class="back-btn" aria-label="목록으로 돌아가기">
-        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <polyline points="15 18 9 12 15 6"></polyline>
-        </svg>
-        목록으로 돌아가기
-      </a>
+  <div class="container">
+    <div class="back-bar">
+      <a href="list.html" class="btn">뒤로 가기</a>
     </div>
+
+    <main id="detailMain">
+      <!-- 히어로 이미지 -->
+      <div class="detail-hero">
+        <img id="detailHeroImg" src="" alt="맛집 이미지">
+      </div>
+
+      <div class="detail-layout">
+        <!-- 왼쪽 내용 -->
+        <div class="detail-content">
+          <div class="detail-info-header">
+            <span class="tag region" id="detailRegionTag"></span>
+            <span class="tag category" id="detailCategoryTag"></span>
+            <h1 id="detailName"></h1>
+            <p>📍 <span id="detailAddress"></span></p>
+          </div>
+
+          <!-- 탭 버튼 -->
+          <div class="tab-nav">
+            <button class="tab-btn active" data-tab="menu">메뉴</button>
+            <button class="tab-btn" data-tab="location">지도 보기</button>
+            <button class="tab-btn" data-tab="review">리뷰 작성</button>
+          </div>
+
+          <!-- 탭 패널 -->
+          <div class="tab-panel active" id="tab-menu">
+            <div id="menuList"></div>
+          </div>
+
+          <div class="tab-panel" id="tab-location">
+            <div id="map" class="map-container"></div>
+            <div id="mapFallback" class="map-fallback">
+              <p>지도를 불러올 수 없습니다.</p>
+              <p id="mapFallbackAddr"></p>
+              <a id="kakaoMapLink" href="#" target="_blank" class="btn">카카오맵에서 보기</a>
+            </div>
+            <p>📍 <span id="mapAddress"></span></p>
+          </div>
+
+          <div class="tab-panel" id="tab-review">
+            <!-- 리뷰 폼 -->
+            <form id="reviewForm" class="review-form">
+              <h3>리뷰 남기기</h3>
+              <div class="form-group">
+                <label>닉네임</label>
+                <input type="text" id="reviewNickname" required>
+              </div>
+              <div class="form-group">
+                <label>별점</label>
+                <div class="star-rating">
+                  <input type="radio" name="rating" value="5" id="s5"><label for="s5">★</label>
+                  <input type="radio" name="rating" value="4" id="s4"><label for="s4">★</label>
+                  <input type="radio" name="rating" value="3" id="s3"><label for="s3">★</label>
+                  <input type="radio" name="rating" value="2" id="s2"><label for="s2">★</label>
+                  <input type="radio" name="rating" value="1" id="s1"><label for="s1">★</label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>내용</label>
+                <textarea id="reviewContent" rows="4" required></textarea>
+              </div>
+              <button type="submit" class="btn">리뷰 등록</button>
+            </form>
+
+            <div id="reviewList" class="review-list"></div>
+          </div>
+        </div>
+
+        <!-- 오른쪽 사이드바 -->
+        <aside class="detail-sidebar">
+          <div class="sidebar-card">
+            <h3>가게 정보</h3>
+            <p><strong>지역:</strong> <span id="sidebarRegion"></span></p>
+            <p><strong>종류:</strong> <span id="sidebarCategory"></span></p>
+            <p><strong>주소:</strong> <span id="sidebarAddress"></span></p>
+            <p><strong>전화:</strong> <span id="sidebarPhone"></span></p>
+          </div>
+        </aside>
+      </div>
+    </main>
   </div>
 
-  <main id="detailMain">
-
-    <!-- ===== HERO IMAGE ===== -->
-    <div class="detail-hero reveal">
-      <img id="detailHeroImg" src="" alt="" loading="eager">
-    </div>
-
-    <!-- ===== DETAIL LAYOUT ===== -->
-    <div class="detail-layout reveal">
-      <div class="container">
-        <div class="detail-grid">
-
-          <!-- 왼쪽: 탭 콘텐츠 -->
-          <div class="detail-content">
-
-            <!-- 가게 정보 헤더 -->
-            <div class="detail-info-header">
-              <div class="detail-tags">
-                <span class="tag region" id="detailRegionTag"></span>
-                <span class="tag category" id="detailCategoryTag"></span>
-              </div>
-              <h1 class="detail-name" id="detailName"></h1>
-              <p class="detail-address">
-                <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                  <circle cx="12" cy="10" r="3"></circle>
-                </svg>
-                <span id="detailAddress"></span>
-              </p>
-            </div>
-
-            <!-- 탭 네비게이션 -->
-            <div class="tab-nav" role="tablist" aria-label="상세 정보 탭">
-              <button class="tab-btn active" data-tab="menu"
-                role="tab" aria-selected="true" aria-controls="tab-menu">
-                메뉴 소개
-              </button>
-              <button class="tab-btn" data-tab="location"
-                role="tab" aria-selected="false" aria-controls="tab-location">
-                위치 안내
-              </button>
-              <button class="tab-btn" data-tab="review"
-                role="tab" aria-selected="false" aria-controls="tab-review">
-                한줄 리뷰
-              </button>
-            </div>
-
-            <!-- 탭 패널: 메뉴 소개 -->
-            <div class="tab-panel active" id="tab-menu" role="tabpanel">
-              <div class="menu-list" id="menuList"></div>
-            </div>
-
-            <!-- 탭 패널: 위치 안내 -->
-            <div class="tab-panel" id="tab-location" role="tabpanel">
-              <div id="map" aria-label="가게 위치 지도"></div>
-              <div id="mapFallback" style="display:none; text-align:center; padding:60px 20px; background:var(--bg-light); border-radius:12px; border:1px dashed var(--border);">
-                <svg viewBox="0 0 24 24" width="48" height="48" stroke="var(--text-light)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 16px;"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
-                <p style="color:#666; margin-bottom:20px;" id="mapFallbackAddr"></p>
-                <a id="kakaoMapLink" href="#" target="_blank" rel="noopener"
-                  style="display:inline-block; padding:12px 28px; background:#e8472a; color:#fff; border-radius:8px; font-weight:700; font-size:0.95rem;">
-                  카카오맵에서 보기
-                </a>
-              </div>
-              <div class="map-address">
-                <svg viewBox="0 0 24 24" width="16" height="16" stroke="var(--primary)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                  <circle cx="12" cy="10" r="3"></circle>
-                </svg>
-                <span id="mapAddress"></span>
-              </div>
-            </div>
-
-            <!-- 탭 패널: 한줄 리뷰 -->
-            <div class="tab-panel" id="tab-review" role="tabpanel">
-
-              <!-- 리뷰 작성 폼 -->
-              <form id="reviewForm" class="review-form">
-                <div class="review-form-row">
-                  <input id="reviewNickname" type="text" placeholder="닉네임 (최대 10자)" maxlength="10" required />
-                  <div class="star-rating">
-                    <input type="radio" name="rating" value="5" id="s5"><label for="s5">★</label>
-                    <input type="radio" name="rating" value="4" id="s4"><label for="s4">★</label>
-                    <input type="radio" name="rating" value="3" id="s3"><label for="s3">★</label>
-                    <input type="radio" name="rating" value="2" id="s2"><label for="s2">★</label>
-                    <input type="radio" name="rating" value="1" id="s1"><label for="s1">★</label>
-                  </div>
-                </div>
-                <textarea id="reviewContent" placeholder="맛집 리뷰를 작성해주세요. (최대 300자)" rows="4" maxlength="300" required></textarea>
-                <button type="submit" class="btn btn-primary review-submit-btn">리뷰 등록</button>
-              </form>
-
-              <!-- 리뷰 목록 -->
-              <div id="reviewList" class="review-list"></div>
-
-            </div>
-
-          </div>
-
-          <!-- 오른쪽: 사이드바 -->
-          <aside class="detail-sidebar" aria-label="가게 기본 정보">
-            <div class="sidebar-card">
-              <h3>기본 정보</h3>
-              <div class="info-row">
-                <span class="info-label">지역</span>
-                <span class="info-value" id="sidebarRegion"></span>
-              </div>
-              <div class="info-row">
-                <span class="info-label">종류</span>
-                <span class="info-value" id="sidebarCategory"></span>
-              </div>
-              <div class="info-row">
-                <span class="info-label">주소</span>
-                <span class="info-value" id="sidebarAddress"></span>
-              </div>
-              <div class="info-row">
-                <span class="info-label">전화</span>
-                <span class="info-value" id="sidebarPhone"></span>
-              </div>
-            </div>
-          </aside>
-
-        </div>
-      </div>
-    </div>
-
-  </main>
-
-  <!-- ===== FOOTER ===== -->
   <footer id="footer">
     <div class="container">
-      <div class="footer-inner">
-        <div class="footer-brand">
-          <div class="logo" style="display:flex;align-items:center;">
-            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path><path d="M7 2v20"></path><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"></path></svg>
-            PLATE<span style="color:var(--text-sub)">.</span>
-          </div>
-          <p class="desc">
-            Discover and savor the finest culinary experiences.<br>
-            Welcome to PLATE.
-          </p>
-        </div>
-        <div class="footer-info">
-          <h4>팀 소개</h4>
-          <p>
-            팀명: PLATE.<br>
-            2학년 개발 리드 · 1학년 디자인 보조<br>
-            기술 스택: HTML · CSS · JavaScript<br>
-            데이터: 카카오 로컬 API
-          </p>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; 2025 PLATE. All rights reserved.</p>
-      </div>
+      <h2>PLATE 맛집 추천</h2>
+      <p>개발: 고등학교 2학년, 1학년 웹개발 프로젝트</p>
+      <p>HTML, CSS, JS</p>
     </div>
   </footer>
 
@@ -218,9 +144,8 @@
   <script>
     if (typeof kakao !== 'undefined') {
       kakao.maps.load(onKakaoSDKLoad);
-    } else {
-      console.error('카카오 지도 SDK 로드 실패 — Network 탭에서 dapi.kakao.com 요청 상태 확인');
     }
   </script>
 </body>
+
 </html>
