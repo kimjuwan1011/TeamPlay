@@ -43,8 +43,25 @@ function createCard(r) {
     article.addEventListener('click', () => { location.href = `detail.html?id=${r.id}`; });
     article.addEventListener('keydown', e => { if (e.key === 'Enter') location.href = `detail.html?id=${r.id}`; });
   } else {
-    article.style.cursor = 'default';
-    article.title = r.address;
+    article.addEventListener('click', () => {
+      let mapUrl = `https://map.kakao.com/link/map/${encodeURIComponent(r.name)},${r.lat},${r.lng}`;
+      if (r.placeUrl) {
+        const match = r.placeUrl.match(/(\d+)$/);
+        if (match) mapUrl = `https://map.kakao.com/?itemId=${match[1]}`;
+      }
+      window.open(mapUrl, '_blank');
+    });
+    article.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        let mapUrl = `https://map.kakao.com/link/map/${encodeURIComponent(r.name)},${r.lat},${r.lng}`;
+        if (r.placeUrl) {
+          const match = r.placeUrl.match(/(\d+)$/);
+          if (match) mapUrl = `https://map.kakao.com/?itemId=${match[1]}`;
+        }
+        window.open(mapUrl, '_blank');
+      }
+    });
+    article.title = '카카오맵에서 보기';
   }
 
   article.classList.add('reveal');

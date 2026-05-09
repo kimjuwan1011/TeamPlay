@@ -39,6 +39,14 @@ body {
   background-color: var(--bg-main);
   color: var(--text-main);
   transition: background-color 0.3s, color 0.3s;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+body > .container,
+body > main {
+  flex: 1;
 }
 
 .container {

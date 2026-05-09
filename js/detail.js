@@ -29,6 +29,16 @@ function renderDetail(r) {
   const mapAddr = document.getElementById('mapAddress');
   if (mapAddr) mapAddr.textContent = r.address;
 
+  const kakaoLink = document.getElementById('kakaoMapLink');
+  if (kakaoLink) {
+    let mapUrl = `https://map.kakao.com/link/map/${encodeURIComponent(r.name)},${r.lat},${r.lng}`;
+    if (r.placeUrl) {
+      const match = r.placeUrl.match(/(\d+)$/);
+      if (match) mapUrl = `https://map.kakao.com/?itemId=${match[1]}`;
+    }
+    kakaoLink.href = mapUrl;
+  }
+
   const sidebarPhone = document.getElementById('sidebarPhone');
   if (sidebarPhone) sidebarPhone.textContent = r.phone || '정보 없음';
 
@@ -138,11 +148,6 @@ function showMapFallback() {
 
   const addrEl = document.getElementById('mapFallbackAddr');
   if (addrEl) addrEl.textContent = r.address;
-
-  const link = document.getElementById('kakaoMapLink');
-  if (link) {
-    link.href = r.placeUrl || `https://map.kakao.com/link/map/${encodeURIComponent(r.name)},${r.lat},${r.lng}`;
-  }
 }
 
 /* ===== 리뷰 기능 ===== */

@@ -79,12 +79,20 @@
 
           <div class="tab-panel" id="tab-location">
             <div id="map" class="map-container"></div>
-            <div id="mapFallback" class="map-fallback">
-              <p>지도를 불러올 수 없습니다.</p>
-              <p id="mapFallbackAddr"></p>
+            <div id="mapFallback" class="map-fallback hidden">
+              <div class="fallback-icon">
+                <svg viewBox="0 0 24 24" width="48" height="48" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+              </div>
+              <p class="fallback-title">현재 환경에서는 지도를 직접 표시할 수 없어요.</p>
+              <p class="fallback-desc">아래 버튼을 눌러 카카오맵에서 상세 위치, 사진, 리뷰를 확인해 보세요!</p>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+              <p style="margin: 0;">📍 <span id="mapAddress"></span></p>
               <a id="kakaoMapLink" href="#" target="_blank" class="btn">카카오맵에서 보기</a>
             </div>
-            <p>📍 <span id="mapAddress"></span></p>
           </div>
 
           <div class="tab-panel" id="tab-review">

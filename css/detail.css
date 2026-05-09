@@ -134,11 +134,29 @@
   height: 350px;
 }
 .map-fallback {
-  display: none;
-  padding: 20px;
-  border: 1px solid var(--border-color);
+  padding: 40px 20px;
+  border: 1px dashed var(--border-color);
+  border-radius: 12px;
   text-align: center;
   background: var(--bg-card);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.fallback-icon {
+  color: var(--text-sub);
+  margin-bottom: 15px;
+}
+.fallback-title {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+.fallback-desc {
+  font-size: 14px;
+  color: var(--text-sub);
+  margin-bottom: 0;
 }
 
 @media (max-width: 800px) {
